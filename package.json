@@ -1,0 +1,11 @@
+{
+	"name": "process_memory.graphdat.plugin",
+	"version": "0.0.1",
+	"title": "Watch individual process memory",
+	"main": "index.js",
+	"private": true,
+	"dependencies": {
+		"sigar" : "0.0.2"
+	},
+	"engine": "node >= 0.8.1"
+}
