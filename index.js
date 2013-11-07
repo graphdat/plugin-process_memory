@@ -1,6 +1,7 @@
 var _param = require('./param.json');
 var _os = require('os');
-var _sigar = require('sigar')();
+var _fs = require('fs');
+var _sysconf = require('sysconf');
 
 function silent(fnc)
 {
@@ -18,18 +19,25 @@ function silent(fnc)
 var reason;
 function findProcId()
 {
-	var procs = _sigar.procList();
+	// Get all proc id's
+	var procs = _fs.readdirSync('/proc').filter(function(e) { return !isNaN(parseInt(e)); });
 	var pidResult = 0;
 
 	var hit;
 
 	procs.every(function(pid)
 	{
-		var re;
-		var args = silent(function() { return _sigar.procArgs(pid); });
-		var exe = silent(function() { return _sigar.procExe(pid); });
+		var stat = _fs.readFileSync('/proc/' + pid + '/stat', 'utf8').split(' ');
+		var cwd = silent(function() { return _fs.readlinkSync('/proc/' + pid + '/cwd'); });
+		var path = silent(function() { return _fs.readlinkSync('/proc/' + pid + '/exe'); });
 
-		var prc = { name : (args && args[0]) ? args[0] : '', path : (exe && exe.name) ? exe.name : '', cwd : (exe && exe.cwd) ? exe.cwd : '' };
+		var re;
+
+		var prc = {
+			name : stat[1].substr(1, stat[1].length - 2),
+			path : path || '',
+			cwd : cwd || ''
+		};
 
 		if (_param.processName)
 		{
@@ -71,8 +79,11 @@ function findProcId()
 	return pidResult;
 }
 
+
 var _pollInterval = _param.pollInterval || 1000;
 var _source = _param.source || _os.hostname();
+var _pagesize = _sysconf.get(_sysconf._SC_PAGESIZE);
+
 var _pid;
 var _notified;
 
@@ -99,7 +110,7 @@ function poll()
 	{
 		try
 		{
-			var memuse = _sigar.procMem(_pid).resident;
+			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'utf8').split(' ')[23] * _pagesize;
 
 			console.log('%s %d', _source, memuse);
 
