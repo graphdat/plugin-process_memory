@@ -1,7 +1,7 @@
 {
 	"description" : "Displays memory use for a single process",
 	"command" : "node index.js",
-	"postExtract" : "bash install.sh",
+	"postExtract" : "npm install",
 	"ignore" : "node_modules",
 	"metrics" : ["MEM_PROCESS"],
 	"paramSchema" : [
