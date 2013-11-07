@@ -112,7 +112,7 @@ function poll()
 		{
 			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'utf8').split(' ')[23] * _pagesize;
 
-			console.log('%s %d', _source, memuse);
+			console.log('MEM_PROCESS %d %s', memuse, _source);
 
 		}
 		catch(ex)
