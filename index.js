@@ -89,28 +89,26 @@ var _notified;
 
 function poll()
 {
-	if (!_pid)
-	{
+	if (!_pid || _pid <= 0)
 		_pid = findProcId();
 
-		if (_pid <= 0)
+	if (_pid <= 0)
+	{
+		// Couldn't locate, spit out an error once and keep trying
+		if (!_notified)
 		{
-			// Couldn't locate, spit out an error once and keep trying
-			if (!_notified)
-			{
-				_notified = true;
-				console.error('Unable to locate process, ' + reason);
-			}
+			_notified = true;
+			console.error('Unable to locate process, ' + reason);
 		}
-		else
-			_notified = false;
 	}
+	else
+		_notified = false;
 
-	if (_pid)
+	if (_pid > 0)
 	{
 		try
 		{
-			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'utf8').split(' ')[23] * _pagesize;
+			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'u$
 
 			console.log('MEM_PROCESS %d %s', memuse, _source);
 
@@ -126,8 +124,7 @@ function poll()
 		}
 	}
 	else
-		console.log('%s 0', _source);
-
+		console.log('MEM_PROCESS 0 %s', _source);
 
 	setTimeout(poll, _pollInterval);
 }
