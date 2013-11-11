@@ -108,7 +108,7 @@ function poll()
 	{
 		try
 		{
-			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'u$
+			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'utf8');
 
 			console.log('MEM_PROCESS %d %s', memuse, _source);
 
