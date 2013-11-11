@@ -120,7 +120,7 @@ function poll()
 			else
 				console.error('Unexpected error: ' + ex.message);
 
-			console.log('%s 0', _source);
+			console.log('MEM_PROCESS 0 %s', _source);
 		}
 	}
 	else
