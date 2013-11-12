@@ -2,6 +2,7 @@ var _param = require('./param.json');
 var _os = require('os');
 var _fs = require('fs');
 var _sysconf = require('sysconf');
+var _tools = require('graphdat-plugin-tools');
 
 function silent(fnc)
 {
