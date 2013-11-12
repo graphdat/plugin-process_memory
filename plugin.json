@@ -4,6 +4,7 @@
 	"postExtract" : "npm install",
 	"ignore" : "node_modules",
 	"metrics" : ["MEM_PROCESS"],
+	"paramArray" : { "itemTitle" : ["source"], "schemaTitle" : "Process"},
 	"paramSchema" : [
 		{
 			"title" : "Source",
