@@ -128,7 +128,8 @@ function pollProcess(prc)
 
 function poll()
 {
-	_param.items.forEach(pollProcess);
+	if (_param.items)
+		_param.items.forEach(pollProcess);
 
 	setTimeout(poll, _pollInterval);
 }
