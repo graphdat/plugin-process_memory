@@ -82,50 +82,53 @@ function findProcId()
 
 
 var _pollInterval = _param.pollInterval || 1000;
-var _source = _param.source || _os.hostname();
 var _pagesize = _sysconf.get(_sysconf._SC_PAGESIZE);
 
-var _pid;
-var _notified;
 
-function poll()
+function pollProcess(prc)
 {
-	if (!_pid || _pid <= 0)
-		_pid = findProcId();
+	if (!prc.pid || prc.pid <= 0)
+		prc.pid = findProcId();
 
-	if (_pid <= 0)
+	if (prc.pid <= 0)
 	{
 		// Couldn't locate, spit out an error once and keep trying
-		if (!_notified)
+		if (!prc.notified)
 		{
-			_notified = true;
+			prc.notified = true;
 			console.error('Unable to locate process, ' + reason);
 		}
 	}
 	else
-		_notified = false;
+		prc.notified = false;
 
-	if (_pid > 0)
+	if (prc.pid > 0)
 	{
 		try
 		{
-			var memuse = _fs.readFileSync('/proc/' + _pid + '/stat', 'utf8').split(' ')[23] * _pagesize;
+			var memuse = _fs.readFileSync('/proc/' + prc.pid + '/stat', 'utf8').split(' ')[23] * _pagesize;
 
-			console.log('MEM_PROCESS %d %s', memuse, _source);
+			console.log('MEM_PROCESS %d %s', memuse, prc.source);
 
 		}
 		catch(ex)
 		{
 			if (ex.message.indexOf('No such process') != -1)
-				_pid = 0;
+				prc.pid = 0;
 			else
 				console.error('Unexpected error: ' + ex.message);
 
-			console.log('MEM_PROCESS 0 %s', _source);
+			console.log('MEM_PROCESS 0 %s', prc.source);
 		}
 	}
 	else
-		console.log('MEM_PROCESS 0 %s', _source);
+		console.log('MEM_PROCESS 0 %s', prc.source);
+
+}
+
+function poll()
+{
+	_param.items.forEach(pollProcess);
 
 	setTimeout(poll, _pollInterval);
 }

@@ -10,7 +10,8 @@
 			"title" : "Source",
 			"name" : "source",
 			"description" : "The source to display in the legend for the memory data.",
-			"type" : "string"
+			"type" : "string",
+			"required" : true
 		},
 		{
 			"title" : "Process Name Regex",
