@@ -130,6 +130,12 @@ function poll()
 {
 	if (_param.items)
 		_param.items.forEach(pollProcess);
+	else
+	{
+		console.error('No configuration, exiting');
+		process.exit(1);
+	}
+
 
 	setTimeout(poll, _pollInterval);
 }
