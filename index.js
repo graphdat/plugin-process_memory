@@ -18,7 +18,7 @@ function silent(fnc)
 
 // Returns process id or 0 if not found, -1 if ambiguous, sets reason
 var reason;
-function findProcId()
+function findProcId(cfg)
 {
 	// Get all proc id's
 	var procs = _fs.readdirSync('/proc').filter(function(e) { return !isNaN(parseInt(e)); });
@@ -40,21 +40,21 @@ function findProcId()
 			cwd : cwd || ''
 		};
 
-		if (_param.processName)
+		if (cfg.processName)
 		{
-			re = new RegExp(_param.processName);
+			re = new RegExp(cfg.processName);
 			if (!re.test(prc.name))
 				return true;
 		}
-		if (_param.processPath)
+		if (cfg.processPath)
 		{
-			re = new RegExp(_param.processPath);
+			re = new RegExp(cfg.processPath);
 			if (!re.test(prc.path))
 				return true;
 		}
-		if (_param.processCwd)
+		if (cfg.processCwd)
 		{
-			re = new RegExp(_param.processCwd);
+			re = new RegExp(cfg.processCwd);
 			if (!re.test(prc.cwd))
 				return true;
 		}
@@ -88,7 +88,7 @@ var _pagesize = _sysconf.get(_sysconf._SC_PAGESIZE);
 function pollProcess(prc)
 {
 	if (!prc.pid || prc.pid <= 0)
-		prc.pid = findProcId();
+		prc.pid = findProcId(prc);
 
 	if (prc.pid <= 0)
 	{
@@ -96,7 +96,7 @@ function pollProcess(prc)
 		if (!prc.notified)
 		{
 			prc.notified = true;
-			console.error('Unable to locate process, ' + reason);
+			console.error('Unable to locate process for ' + prc.source + ', ' + reason);
 		}
 	}
 	else
@@ -116,7 +116,7 @@ function pollProcess(prc)
 			if (ex.message.indexOf('No such process') != -1)
 				prc.pid = 0;
 			else
-				console.error('Unexpected error: ' + ex.message);
+				console.error('Unexpected error for ' + prc.source + ': ' + ex.message);
 
 			console.log('MEM_PROCESS 0 %s', prc.source);
 		}
