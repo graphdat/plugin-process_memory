@@ -41,7 +41,7 @@ function pollProcess(prc)
 		}
 		catch(ex)
 		{
-			if (ex.message.indexOf('No such process') != -1)
+			if (ex.message.indexOf('ENOENT') != -1)
 				prc.pid = 0;
 			else
 				console.error('Unexpected error for ' + prc.source + ': ' + ex.message);
