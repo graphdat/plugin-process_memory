@@ -6,6 +6,10 @@ Displays memory use (RSS) for specific processes. Use Regular Expressions to spe
 ### Platforms
 - Linux
 
+#### Prerequisites
+- node version 0.8.0 or later
+- npm version 1.4.21 or later
+
 ### Plugin Setup
 
 None
