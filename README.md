@@ -20,7 +20,7 @@ Displays memory use (RSS) for specific processes. Use Regular Expressions to spe
 
 None
 
-### Plugin Configuration Fields
+#### Plugin Configuration Fields
 
 |Field Name        |Description                                                                                   |
 |:-----------------|:---------------------------------------------------------------------------------------------|
@@ -30,7 +30,7 @@ None
 |Process CWD Regex |A regular expression to match the current working directory of the process.                   |
 |Reconcile option  |How to reconcile in the case that multiple processes match.  Set to First Match to use the first matching process, Parent to choose the parent process (useful if process is forked), or Longest Running to pick the process that has been running the longest.|
 
-#### Metrics Collected
+### Metrics Collected
 
 |Metric Name   |Description                   |
 |:-------------|:-----------------------------|
