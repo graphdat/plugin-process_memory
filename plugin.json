@@ -3,6 +3,8 @@
 	"command" : "node index.js",
 	"postExtract" : "npm install",
 	"ignore" : "node_modules",
+	"command_lua" : "boundary-meter index.lua",
+	"postExtract_lua" : "",
 	"metrics" : ["MEM_PROCESS"],
 	"paramArray" : { "itemTitle" : ["source"], "schemaTitle" : "Process"},
 	"paramSchema" : [
